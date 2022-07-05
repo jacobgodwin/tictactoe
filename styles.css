@@ -31,6 +31,10 @@
   font-size: 6rem;
 }
 
+.hidden {
+  display: none;
+}
+
 #square1,
 #square4,
 #square7 {
@@ -92,4 +96,16 @@ i {
 
 span {
   font-size: 3rem;
+}
+
+button {
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 8px 20px;
+}
+
+#displayArea {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  gap: 200px;
 }
