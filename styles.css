@@ -109,3 +109,13 @@ button {
   justify-content: center;
   gap: 200px;
 }
+
+/* #gameBoard::before {
+  content: "";
+  height: 4px;
+  background-color: #fca311;
+  width: 450px;
+  position: absolute;
+  left: 34.4%;
+  top: 52%;
+} */

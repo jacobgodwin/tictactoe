@@ -14,7 +14,7 @@ const gameBoard = (() => {
   let allMarkers = Array.from(document.getElementsByClassName("marker"));
   let gameSquares = Array.from(document.getElementsByClassName("gameSquare"));
 
-  let playSelection = (e) => {
+  const playSelection = (e) => {
     if (e.target.innerHTML === "X") {
       modifyClass(e.target.parentElement, "inactive", "active");
       drawMarker(e.target.parentElement, e.target.innerHTML);
@@ -26,15 +26,17 @@ const gameBoard = (() => {
     }
   };
 
-  let modifyClass = (item, remove, add) => {
+  const modifyClass = (item, remove, add) => {
     item.classList.remove(remove);
     item.classList.add(add);
   };
 
-  let drawMarker = (e, value) => {
+  const drawMarker = (e, value) => {
     let selectionDivs = Array.from(e.children);
     selectionDivs.forEach((element) => element.classList.add("hidden"));
-    e.appendChild(document.createTextNode(value));
+    let div = document.createElement("div");
+    div.innerHTML = value;
+    e.appendChild(div);
     if (value === "X") {
       xArray.push(e.id);
     } else if (value === "O") {
@@ -44,7 +46,7 @@ const gameBoard = (() => {
     }
   };
 
-  let checkBoard = () => {
+  const checkBoard = () => {
     let activeSquares = Array.from(document.getElementsByClassName("active"));
     if (activeSquares.length < 9) {
       winConditions.forEach((item) => {
@@ -52,6 +54,9 @@ const gameBoard = (() => {
           item.every((element) => xArray.includes(element)) ||
           item.every((element) => oArray.includes(element))
         ) {
+          allMarkers.forEach((element) => {
+            element.classList.add("hidden");
+          });
           alert("You Won!");
         }
       });
@@ -60,7 +65,7 @@ const gameBoard = (() => {
     }
   };
 
-  let clearScoreArray = () => {
+  const clearScoreArray = () => {
     while (xArray.length > 0) {
       xArray.pop();
     }
@@ -86,8 +91,18 @@ const gameBoard = (() => {
 
 const displayController = (() => {
   let gameBtn = document.getElementById("gameBtn");
+  let player1Btn = document.getElementById("addPlayer1");
+  let player2Btn = document.getElementById("addPlayer2");
+  let players = [];
 
-  let startGame = () => {
+  const Player = (name, marker, score) => {
+    this.name = name;
+    this.marker = marker;
+    this.score = score;
+    players.push(this);
+  };
+
+  const startGame = () => {
     gameBoard.allMarkers.forEach((element) => {
       element.classList.remove("hidden");
     });
@@ -95,7 +110,7 @@ const displayController = (() => {
     gameBtn.addEventListener("click", resetGame);
   };
 
-  let resetGame = () => {
+  const resetGame = () => {
     gameBoard.gameSquares.forEach((element) => {
       if (Array.from(element.classList).includes("active")) {
         element.lastChild.remove();
@@ -104,11 +119,11 @@ const displayController = (() => {
     });
     gameBoard.clearScoreArray();
   };
+
+  const addPlayer = () => {
+    player1Btn.classList.add("hidden");
+    player2Btn.classList.add("hidden");
+  };
+
   gameBtn.addEventListener("click", startGame);
 })();
-
-const Player = (name, marker, score) => {
-  this.name = name;
-  this.marker = marker;
-  this.score = score;
-};
