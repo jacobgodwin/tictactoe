@@ -95,9 +95,8 @@ const displayController = (() => {
   let player2Btn = document.getElementById("addPlayer2");
   let players = [];
 
-  const Player = (name, marker, score) => {
+  const Player = (name, score) => {
     this.name = name;
-    this.marker = marker;
     this.score = score;
     players.push(this);
   };
@@ -120,10 +119,11 @@ const displayController = (() => {
     gameBoard.clearScoreArray();
   };
 
-  const addPlayer = () => {
-    player1Btn.classList.add("hidden");
-    player2Btn.classList.add("hidden");
+  const addPlayer = (e) => {
+    console.log(e);
   };
 
+  player1Btn.addEventListener("click", addPlayer);
+  player2Btn.addEventListener("click", addPlayer);
   gameBtn.addEventListener("click", startGame);
 })();
