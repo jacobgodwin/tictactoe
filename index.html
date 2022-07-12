@@ -55,17 +55,39 @@
     </div>
     </div>
     <div id="displayArea">
-        <div id="player1">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <button id="addPlayer1">Player 1</button>
-        </div>
+        <form id="player1">
+            <div>Player 1</div>
+            <div>
+                <label for="namePl1">Name:</label>
+                <input type="text" id="namePl1" name="namePl1" required>
+            </div>
+            <div>Choose one:</div>
+            <div>
+                <input type="radio" id="xPlayer1" name="player1Choice">
+                <label for="xPlayer1">X</label>
+                <input type="radio" id="oPlayer1" name="player1Choice">
+                <label for="oPlayer1">O</label>
+            </div>
+            <button id="addPlayer1" type="submit">Add Player</button>
+        </form>
         <div id="startReset">
             <button id="gameBtn">Start</button>
         </div>
-        <div id="player2">
-            <button id="addPlayer2">Player 2</button>
-        </div>
+        <form id="player2">
+            <div>Player 2</div>
+            <div>
+                <label for="namePl2">Name:</label>
+                <input type="text" id="namePl2" name="namePl2" required>
+            </div>
+            <div>Choose one:</div>
+            <div>
+                <input type="radio" id="xPlayer2" name="player2Choice">
+                <label for="xPlayer2">X</label>
+                <input type="radio" id="oPlayer2" name="player2Choice">
+                <label for="oPlayer2">O</label>
+            </div>
+            <button id="addPlayer2" type="submit">Add Player</button>
+        </form>
     </div>
     <script src="scripts.js"></script>
 </body>

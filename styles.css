@@ -110,6 +110,13 @@ button {
   gap: 200px;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 /* #gameBoard::before {
   content: "";
   height: 4px;

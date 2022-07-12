@@ -98,7 +98,6 @@ const displayController = (() => {
   const Player = (name, marker, score) => {
     this.name = name;
     this.marker = marker;
-    this.score = score;
     players.push(this);
   };
 
