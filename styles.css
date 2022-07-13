@@ -1,5 +1,5 @@
 * {
-  font-family: "Permanent Marker", Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   color: #14213d;
 }
 
@@ -113,16 +113,28 @@ button {
 form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
+  align-items: flex-start;
+  gap: 1rem;
 }
 
-/* #gameBoard::before {
-  content: "";
-  height: 4px;
-  background-color: #fca311;
-  width: 450px;
-  position: absolute;
-  left: 34.4%;
-  top: 52%;
-} */
+form > button {
+  align-self: center;
+}
+
+#scoreBoard {
+  height: 3rem;
+  width: 10rem;
+  background-color: #e5e5e5;
+  border-radius: 0.5rem;
+}
+
+#startReset {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+#playerNames {
+  font-size: 2rem;
+}

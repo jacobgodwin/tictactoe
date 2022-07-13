@@ -11,17 +11,24 @@ const gameBoard = (() => {
   ];
   let xArray = [];
   let oArray = [];
-  let allMarkers = Array.from(document.getElementsByClassName("marker"));
   let gameSquares = Array.from(document.getElementsByClassName("gameSquare"));
+  let gameCounter = 0;
 
   const playSelection = (e) => {
-    if (e.target.innerHTML === "X") {
-      modifyClass(e.target.parentElement, "inactive", "active");
-      drawMarker(e.target.parentElement, e.target.innerHTML);
+    console.log(gameCounter);
+    if (gameCounter % 2 === 0) {
+      gameCounter += 1;
+      console.log(gameCounter);
+      e.target.removeEventListener("click", playSelection);
+      modifyClass(e.target, "inactive", "active");
+      drawMarker(e.target, "X");
       checkBoard();
-    } else if (e.target.innerHTML === "O") {
-      modifyClass(e.target.parentElement, "inactive", "active");
-      drawMarker(e.target.parentElement, e.target.innerHTML);
+    } else {
+      gameCounter += 1;
+      console.log(gameCounter);
+      e.target.removeEventListener("click", playSelection);
+      modifyClass(e.target, "inactive", "active");
+      drawMarker(e.target, "O");
       checkBoard();
     }
   };
@@ -32,8 +39,6 @@ const gameBoard = (() => {
   };
 
   const drawMarker = (e, value) => {
-    let selectionDivs = Array.from(e.children);
-    selectionDivs.forEach((element) => element.classList.add("hidden"));
     let div = document.createElement("div");
     div.innerHTML = value;
     e.appendChild(div);
@@ -50,14 +55,16 @@ const gameBoard = (() => {
     let activeSquares = Array.from(document.getElementsByClassName("active"));
     if (activeSquares.length < 9) {
       winConditions.forEach((item) => {
-        if (
-          item.every((element) => xArray.includes(element)) ||
-          item.every((element) => oArray.includes(element))
-        ) {
-          allMarkers.forEach((element) => {
-            element.classList.add("hidden");
-          });
-          alert("You Won!");
+        if (item.every((element) => xArray.includes(element))) {
+          alert(displayController.players[0].name + " Wins!");
+          gameSquares.forEach((element) =>
+            element.removeEventListener("click", playSelection)
+          );
+        } else if (item.every((element) => oArray.includes(element))) {
+          alert(displayController.players[1].name + " Wins!");
+          gameSquares.forEach((element) =>
+            element.removeEventListener("click", playSelection)
+          );
         }
       });
     } else if (activeSquares.length === 9) {
@@ -74,56 +81,88 @@ const gameBoard = (() => {
     }
   };
 
-  allMarkers.forEach((element) =>
-    element.addEventListener("click", playSelection)
-  );
+  const resetCounter = () => {
+    gameCounter = 0;
+  };
 
   return {
-    allMarkers: allMarkers,
     gameSquares: gameSquares,
+    gameCounter: gameCounter,
     winConditions: winConditions,
     xArray: xArray,
     oArray: oArray,
     modifyClass: modifyClass,
     clearScoreArray: clearScoreArray,
+    playSelection: playSelection,
+    resetCounter: resetCounter,
   };
 })();
 
 const displayController = (() => {
   let gameBtn = document.getElementById("gameBtn");
-  let player1Btn = document.getElementById("addPlayer1");
-  let player2Btn = document.getElementById("addPlayer2");
   let players = [];
 
-  const Player = (name, score) => {
+  function Player(name, score, player) {
     this.name = name;
     this.score = score;
+    this.player = player;
     players.push(this);
-  };
+  }
 
   const startGame = () => {
-    gameBoard.allMarkers.forEach((element) => {
-      element.classList.remove("hidden");
-    });
     gameBtn.innerHTML = "Reset";
+    gameBoard.gameSquares.forEach((element) =>
+      element.addEventListener("click", gameBoard.playSelection)
+    );
     gameBtn.addEventListener("click", resetGame);
   };
 
   const resetGame = () => {
     gameBoard.gameSquares.forEach((element) => {
+      element.addEventListener("click", gameBoard.playSelection);
       if (Array.from(element.classList).includes("active")) {
         element.lastChild.remove();
         gameBoard.modifyClass(element, "active", "inactive");
       }
     });
     gameBoard.clearScoreArray();
+    gameBoard.resetCounter();
   };
 
-  const addPlayer = (e) => {
-    console.log(e);
+  const addPlayer = () => {
+    let playerForms = Array.from(document.getElementsByTagName("form"));
+    let playerDisplay = document.getElementById("playerNames");
+    playerForms.forEach((element) => {
+      if (element.elements[0].value) {
+        if (element.id === "player1") {
+          playerDisplay.innerHTML = element.elements[0].value;
+          new Player(element.elements[0].value, 0, "Player 1");
+          console.log(players[0].name);
+          element.classList.add("hidden");
+        } else {
+          playerDisplay.innerHTML += " vs " + element.elements[0].value;
+          new Player(element.elements[0].value, 0, "Player 2");
+          element.classList.add("hidden");
+        }
+      } else {
+        if (element.id === "player1") {
+          playerDisplay.innerHTML = "Player 1";
+          new Player("Player 1", 0, "Player 1");
+          console.log(players[0].name);
+          element.classList.add("hidden");
+        } else {
+          playerDisplay.innerHTML += " vs " + "Player 2";
+          new Player("Player 2", 0, "Player 2");
+          element.classList.add("hidden");
+        }
+      }
+    });
   };
 
-  player1Btn.addEventListener("click", addPlayer);
-  player2Btn.addEventListener("click", addPlayer);
   gameBtn.addEventListener("click", startGame);
+  gameBtn.addEventListener("click", addPlayer);
+
+  return {
+    players: players,
+  };
 })();
