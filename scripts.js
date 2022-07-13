@@ -13,6 +13,7 @@ const gameBoard = (() => {
   let oArray = [];
   let gameSquares = Array.from(document.getElementsByClassName("gameSquare"));
   let gameCounter = 0;
+  let scoreBoard = document.getElementById("scoreBoard");
 
   const playSelection = (e) => {
     console.log(gameCounter);
@@ -44,8 +45,10 @@ const gameBoard = (() => {
     e.appendChild(div);
     if (value === "X") {
       xArray.push(e.id);
+      scoreBoard.innerHTML = `${displayController.players[1].name}'s Move`;
     } else if (value === "O") {
       oArray.push(e.id);
+      scoreBoard.innerHTML = `${displayController.players[0].name}'s Move`;
     } else {
       console.log("Error assigning square marker!");
     }
@@ -56,11 +59,13 @@ const gameBoard = (() => {
     if (activeSquares.length < 9) {
       winConditions.forEach((item) => {
         if (item.every((element) => xArray.includes(element))) {
+          scoreBoard.innerHTML = `${displayController.players[0].name} Wins!`;
           alert(displayController.players[0].name + " Wins!");
           gameSquares.forEach((element) =>
             element.removeEventListener("click", playSelection)
           );
         } else if (item.every((element) => oArray.includes(element))) {
+          scoreBoard.innerHTML = `${displayController.players[1].name} Wins!`;
           alert(displayController.players[1].name + " Wins!");
           gameSquares.forEach((element) =>
             element.removeEventListener("click", playSelection)
@@ -68,6 +73,7 @@ const gameBoard = (() => {
         }
       });
     } else if (activeSquares.length === 9) {
+      scoreBoard.innerHTML = "Tie!";
       alert("Tie!");
     }
   };
@@ -88,6 +94,7 @@ const gameBoard = (() => {
   return {
     gameSquares: gameSquares,
     gameCounter: gameCounter,
+    scoreBoard: scoreBoard,
     winConditions: winConditions,
     xArray: xArray,
     oArray: oArray,
@@ -115,6 +122,7 @@ const displayController = (() => {
       element.addEventListener("click", gameBoard.playSelection)
     );
     gameBtn.addEventListener("click", resetGame);
+    gameBoard.scoreBoard.innerHTML = `${players[0].name}'s Move`;
   };
 
   const resetGame = () => {
@@ -137,7 +145,6 @@ const displayController = (() => {
         if (element.id === "player1") {
           playerDisplay.innerHTML = element.elements[0].value;
           new Player(element.elements[0].value, 0, "Player 1");
-          console.log(players[0].name);
           element.classList.add("hidden");
         } else {
           playerDisplay.innerHTML += " vs " + element.elements[0].value;
@@ -148,7 +155,6 @@ const displayController = (() => {
         if (element.id === "player1") {
           playerDisplay.innerHTML = "Player 1";
           new Player("Player 1", 0, "Player 1");
-          console.log(players[0].name);
           element.classList.add("hidden");
         } else {
           playerDisplay.innerHTML += " vs " + "Player 2";
@@ -159,8 +165,8 @@ const displayController = (() => {
     });
   };
 
-  gameBtn.addEventListener("click", startGame);
   gameBtn.addEventListener("click", addPlayer);
+  gameBtn.addEventListener("click", startGame);
 
   return {
     players: players,
