@@ -107,6 +107,7 @@ const gameBoard = (() => {
 
 const displayController = (() => {
   let gameBtn = document.getElementById("gameBtn");
+  let newGame = document.getElementById("newGame");
   let players = [];
 
   function Player(name, score, player) {
@@ -123,6 +124,7 @@ const displayController = (() => {
     );
     gameBtn.addEventListener("click", resetGame);
     gameBoard.scoreBoard.innerHTML = `${players[0].name}'s Move`;
+    newGame.classList.remove("hidden");
   };
 
   const resetGame = () => {
@@ -165,8 +167,13 @@ const displayController = (() => {
     });
   };
 
+  const refreshPage = () => {
+    window.location.reload();
+  };
+
   gameBtn.addEventListener("click", addPlayer);
   gameBtn.addEventListener("click", startGame);
+  newGame.addEventListener("click", refreshPage);
 
   return {
     players: players,
